@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Krystal Client</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #0088ff;
+            --accent: #ff0088;
+            --dark: #0a0e1a;
+            --darker: #050810;
+            --light: #ffffff;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: width 0.2s, height 0.2s;
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 14px;
+            height: 14px;
+            background: rgba(0, 255, 136, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            animation: fadeOut 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Grid overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(10, 14, 26, 0.95) 0%, transparent 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px var(--primary)); }
+            to { filter: drop-shadow(0 0 20px var(--primary)); }
+        }
+
+        /* Logo Image Styles */
+        .logo-img {
+            height: 50px;
+            width: auto;
+            filter: drop-shadow(0 0 10px var(--primary));
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .back-button {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 12px 30px;
+            border: 2px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: var(--primary);
+            color: var(--darker);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Main Content */
+        .tos-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 150px 60px 100px;
+            z-index: 2;
+        }
+
+        .tos-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .tos-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .tos-subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 2px;
+        }
+
+        .last-updated {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 136, 255, 0.1) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            font-size: 14px;
+            letter-spacing: 1px;
+            color: var(--primary);
+        }
+
+        .tos-content {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.03) 0%, rgba(0, 136, 255, 0.03) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 60px;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .tos-section {
+            margin-bottom: 50px;
+        }
+
+        .tos-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-number {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 18px;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            color: var(--light);
+        }
+
+        .section-content p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 15px;
+        }
+
+        .section-content ul {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+
+        .section-content li {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .warning-box {
+            background: rgba(255, 0, 136, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 20px 30px;
+            margin: 25px 0;
+        }
+
+        .warning-box p {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .info-box {
+            background: rgba(0, 136, 255, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 20px 30px;
+            margin: 25px 0;
+        }
+
+        .info-box p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Contact Section */
+        .contact-section {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(0, 255, 136, 0.2);
+            text-align: center;
+        }
+
+        .contact-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .contact-info {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+
+        .contact-link {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-link:hover {
+            color: var(--secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 30px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .tos-container {
+                padding: 120px 30px 60px;
+            }
+
+            .tos-title {
+                font-size: 48px;
+            }
+
+            .tos-content {
+                padding: 40px 30px;
+            }
+
+            .section-title {
+                font-size: 24px;
+            }
+
+            .section-content p,
+            .section-content li {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Background Animation -->
+    <div class="bg-animation" id="particles"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="homepage.html" class="logo">KRYSTAL</a>
+        <a href="homepage.html" class="back-button">← Back to Home</a>
+		    <img src="KC element pic.png" alt="krystal client" class="logo-img">
+    </nav>
+
+    <!-- Main Content -->
+    <div class="tos-container">
+        <div class="tos-header">
+            <h1 class="tos-title">Terms of Service</h1>
+            <p class="tos-subtitle">Krystal-Client • Operated from the United Kingdom</p>
+            <span class="last-updated">Effective Date: 28/01/26</span>
+        </div>
+
+        <div class="tos-content">
+            <!-- Opening Statement -->
+            <div class="tos-section" style="border-left: 4px solid var(--primary); padding-left: 30px; margin-bottom: 60px;">
+                <div class="section-content">
+                    <p style="font-size: 20px; line-height: 1.8;">These Terms of Service ("Terms") govern your access to and use of Krystal-Client ("the Service", "we", "us", "our"), operated from the United Kingdom.</p>
+                    <div class="warning-box" style="margin-top: 25px;">
+                        <p style="font-size: 19px;"><span class="highlight">By accessing, purchasing, downloading, or using Krystal-Client, you agree to be legally bound by these Terms. If you do not agree, you must not use the Service.</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 1 -->
+            <div class="tos-section">
+                <div class="section-number">01</div>
+                <h2 class="section-title">Eligibility</h2>
+                <div class="section-content">
+                    <p>You must be at least <span class="highlight">18 years old</span>, or the age of legal majority in your jurisdiction, to use Krystal-Client.</p>
+                    <p>By using the Service, you confirm that you meet this requirement and are legally capable of entering into a binding contract under UK law.</p>
+                </div>
+            </div>
+
+            <!-- Section 2 -->
+            <div class="tos-section">
+                <div class="section-number">02</div>
+                <h2 class="section-title">Acceptance of Terms</h2>
+                <div class="section-content">
+                    <p>By purchasing, accessing, downloading, or otherwise using Krystal-Client, you acknowledge that you have read, understood, and agreed to these Terms in full.</p>
+                    <p>This agreement applies whether you use the Service once or repeatedly.</p>
+                </div>
+            </div>
+
+            <!-- Section 3 -->
+            <div class="tos-section">
+                <div class="section-number">03</div>
+                <h2 class="section-title">Description of the Service</h2>
+                <div class="section-content">
+                    <p>Krystal-Client provides software and related digital services.</p>
+                    <div class="info-box">
+                        <p>We make no guarantee that the Service will meet your expectations, requirements, or specific use cases. The Service may be updated, modified, restricted, or discontinued at any time without notice.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 4 -->
+            <div class="tos-section">
+                <div class="section-number">04</div>
+                <h2 class="section-title">Purchases and Access</h2>
+                <div class="section-content">
+                    <p>When you purchase Krystal-Client:</p>
+                    <ul>
+                        <li><span class="highlight">All sales are final</span>, unless required otherwise by UK consumer law</li>
+                        <li>You receive a licence to use the software, not ownership</li>
+                        <li>Access may be revoked if these Terms are violated</li>
+                    </ul>
+                    <p>We reserve the right to refuse service to anyone at our discretion.</p>
+                </div>
+            </div>
+
+            <!-- Section 5 -->
+            <div class="tos-section">
+                <div class="section-number">05</div>
+                <h2 class="section-title">User Responsibility and Assumption of Risk</h2>
+                <div class="section-content">
+                    <div class="warning-box">
+                        <p><span class="highlight">This section is critical and intentional.</span></p>
+                    </div>
+                    <p>By purchasing or using Krystal-Client, you explicitly agree that:</p>
+                    <ul>
+                        <li>You are <span class="highlight">solely responsible</span> for how you use the Service</li>
+                        <li>You are solely responsible for any actions taken using the client</li>
+                        <li>You are solely responsible for any outcomes, consequences, damages, or losses arising from its use</li>
+                    </ul>
+                    <p>This includes, but is not limited to:</p>
+                    <ul>
+                        <li>Violations of laws or regulations</li>
+                        <li>Breaches of third-party terms or agreements</li>
+                        <li>Account bans, suspensions, or terminations</li>
+                        <li>Data loss, financial loss, or reputational harm</li>
+                    </ul>
+                    <div class="warning-box">
+                        <p>Krystal-Client does not control, monitor, endorse, or take responsibility for how users choose to use the software.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 6 -->
+            <div class="tos-section">
+                <div class="section-number">06</div>
+                <h2 class="section-title">Prohibited Use</h2>
+                <div class="section-content">
+                    <p>You agree not to use Krystal-Client:</p>
+                    <ul>
+                        <li>In violation of any applicable UK or international law</li>
+                        <li>To infringe intellectual property rights</li>
+                        <li>To bypass security, authentication, or safeguards</li>
+                        <li>For harassment, abuse, fraud, or malicious activity</li>
+                    </ul>
+                    <p>We do not authorise illegal or prohibited use. Responsibility for compliance lies entirely with the user.</p>
+                </div>
+            </div>
+
+            <!-- Section 7 -->
+            <div class="tos-section">
+                <div class="section-number">07</div>
+                <h2 class="section-title">No Endorsement or Liability for User Actions</h2>
+                <div class="section-content">
+                    <p>We do not:</p>
+                    <ul>
+                        <li>Endorse any specific use of Krystal-Client</li>
+                        <li>Encourage unlawful or harmful behaviour</li>
+                        <li>Accept responsibility for user conduct</li>
+                    </ul>
+                    <div class="warning-box">
+                        <p>Any use of the Service is undertaken entirely at your own risk.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 8 -->
+            <div class="tos-section">
+                <div class="section-number">08</div>
+                <h2 class="section-title">Intellectual Property</h2>
+                <div class="section-content">
+                    <p>All intellectual property rights in Krystal-Client, including software, branding, and documentation, are owned by us or our licensors.</p>
+                    <p>You may not copy, modify, distribute, reverse engineer, or resell the Service without written permission.</p>
+                </div>
+            </div>
+
+            <!-- Section 9 -->
+            <div class="tos-section">
+                <div class="section-number">09</div>
+                <h2 class="section-title">Disclaimer of Warranties</h2>
+                <div class="section-content">
+                    <p>Krystal-Client is provided <span class="highlight">"as is"</span> and <span class="highlight">"as available"</span>, without warranties of any kind, whether express or implied.</p>
+                    <p>We specifically disclaim any warranties of:</p>
+                    <ul>
+                        <li>Fitness for a particular purpose</li>
+                        <li>Non-infringement</li>
+                        <li>Accuracy or reliability</li>
+                        <li>Continuous availability</li>
+                    </ul>
+                    <p>Use of the Service is at your own discretion and risk.</p>
+                </div>
+            </div>
+
+            <!-- Section 10 -->
+            <div class="tos-section">
+                <div class="section-number">10</div>
+                <h2 class="section-title">Limitation of Liability (UK)</h2>
+                <div class="section-content">
+                    <p>To the fullest extent permitted by UK law:</p>
+                    <ul>
+                        <li>We shall not be liable for any indirect, incidental, special, or consequential loss</li>
+                        <li>We shall not be liable for loss of profits, data, accounts, access, or reputation</li>
+                        <li>We shall not be liable for any actions taken by users using the Service</li>
+                        <li>Our total liability, if any, shall not exceed the amount paid by you for the Service</li>
+                    </ul>
+                    <div class="info-box">
+                        <p>Nothing in these Terms limits liability where it cannot be excluded under UK law (such as death or personal injury caused by negligence).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section 11 -->
+            <div class="tos-section">
+                <div class="section-number">11</div>
+                <h2 class="section-title">Indemnity</h2>
+                <div class="section-content">
+                    <p>You agree to indemnify and hold harmless Krystal-Client, its operators, and affiliates from any claims, damages, losses, or legal expenses arising from:</p>
+                    <ul>
+                        <li>Your use of the Service</li>
+                        <li>Your misuse of the client</li>
+                        <li>Your breach of these Terms</li>
+                        <li>Your violation of any law or third-party rights</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Section 12 -->
+            <div class="tos-section">
+                <div class="section-number">12</div>
+                <h2 class="section-title">Termination</h2>
+                <div class="section-content">
+                    <p>We may suspend or terminate your access to Krystal-Client at any time, with or without notice, if we believe these Terms have been violated.</p>
+                    <p>Termination does not remove your responsibility for actions taken prior to termination.</p>
+                </div>
+            </div>
+
+            <!-- Section 13 -->
+            <div class="tos-section">
+                <div class="section-number">13</div>
+                <h2 class="section-title">Governing Law and Jurisdiction</h2>
+                <div class="section-content">
+                    <p>These Terms are governed by the laws of <span class="highlight">England and Wales</span>.</p>
+                    <p>Any disputes shall be subject to the exclusive jurisdiction of the courts of England and Wales.</p>
+                </div>
+            </div>
+
+            <!-- Section 14 -->
+            <div class="tos-section">
+                <div class="section-number">14</div>
+                <h2 class="section-title">Severability</h2>
+                <div class="section-content">
+                    <p>If any provision of these Terms is found unenforceable, the remaining provisions shall remain valid and enforceable.</p>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="contact-section">
+                <h3 class="contact-title">Contact</h3>
+                <p class="contact-info">For legal or support enquiries:</p>
+                <p class="contact-info">Email: <a href="mailto:krystaladdon@gmail.com" class="contact-link">krystaladdon@gmail.com</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.custom-cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Create trail
+            if (Math.random() > 0.7) {
+                const trail = document.createElement('div');
+                trail.className = 'cursor-trail';
+                trail.style.left = e.clientX + 'px';
+                trail.style.top = e.clientY + 'px';
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), 600);
+            }
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Particle Background
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Link hover effects
+        document.querySelectorAll('a').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                cursor.style.width = '40px';
+                cursor.style.height = '40px';
+            });
+            link.addEventListener('mouseleave', () => {
+                cursor.style.width = '20px';
+                cursor.style.height = '20px';
+            });
+        });
+    </script>
+</body>
+</html>
