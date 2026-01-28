@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download - Krystal Client</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #0088ff;
+            --accent: #ff0088;
+            --dark: #0a0e1a;
+            --darker: #050810;
+            --light: #ffffff;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+            transition: width 0.2s, height 0.2s;
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 14px;
+            height: 14px;
+            background: rgba(0, 255, 136, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            animation: fadeOut 0.6s ease-out forwards;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Grid overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(180deg, rgba(10, 14, 26, 0.95) 0%, transparent 100%);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+            filter: drop-shadow(0 0 10px var(--primary));
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px var(--primary)); }
+            to { filter: drop-shadow(0 0 20px var(--primary)); }
+        }
+
+        .back-button {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 12px 30px;
+            border: 2px solid var(--primary);
+            transition: all 0.3s;
+        }
+
+        .back-button:hover {
+            background: var(--primary);
+            color: var(--darker);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Main Content */
+        .download-container {
+            position: relative;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 150px 60px 100px;
+            z-index: 2;
+        }
+
+        .download-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .download-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: 5px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-transform: uppercase;
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .download-subtitle {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.2) 0%, rgba(0, 136, 255, 0.2) 100%);
+            border: 1px solid var(--primary);
+            font-size: 16px;
+            letter-spacing: 1px;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* Download Section */
+        .download-section {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 136, 255, 0.05) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 60px;
+            margin-bottom: 60px;
+            text-align: center;
+            animation: fadeIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .download-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--light);
+        }
+
+        .download-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .download-btn {
+            padding: 25px 60px;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+            font-family: 'Rajdhani', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .download-btn-primary {
+            background: var(--primary);
+            color: var(--darker);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
+        }
+
+        .download-btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s;
+        }
+
+        .download-btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .download-btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 255, 136, 0.8);
+        }
+
+        .download-btn-secondary {
+            background: transparent;
+            color: var(--secondary);
+            border: 2px solid var(--secondary);
+        }
+
+        .download-btn-secondary:hover {
+            background: var(--secondary);
+            color: var(--darker);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 136, 255, 0.6);
+        }
+
+        .download-icon {
+            font-size: 24px;
+        }
+
+        /* Requirements Section */
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .requirement-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.03) 0%, rgba(0, 136, 255, 0.03) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 40px;
+            transition: all 0.4s;
+        }
+
+        .requirement-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+            box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3);
+        }
+
+        .requirement-card h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--primary);
+        }
+
+        .requirement-card ul {
+            list-style: none;
+        }
+
+        .requirement-card li {
+            font-size: 18px;
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.8);
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .requirement-card li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* Installation Steps */
+        .installation-section {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.03) 0%, rgba(0, 136, 255, 0.03) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            padding: 60px;
+            margin-top: 60px;
+        }
+
+        .installation-section h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--light);
+            text-align: center;
+        }
+
+        .steps-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            min-width: 60px;
+            height: 60px;
+            background: var(--primary);
+            color: var(--darker);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--light);
+        }
+
+        .step-content p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Warning Box */
+        .warning-box {
+            background: rgba(255, 0, 136, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 25px 30px;
+            margin: 40px 0;
+        }
+
+        .warning-box p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .warning-box strong {
+            color: var(--accent);
+        }
+
+        /* Info Box */
+        .info-box {
+            background: rgba(0, 136, 255, 0.1);
+            border-left: 4px solid var(--secondary);
+            padding: 25px 30px;
+            margin: 40px 0;
+        }
+
+        .info-box p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .info-box strong {
+            color: var(--secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 30px;
+            }
+
+            .logo-img {
+                height: 35px;
+            }
+
+            .download-container {
+                padding: 120px 30px 60px;
+            }
+
+            .download-title {
+                font-size: 48px;
+            }
+
+            .download-section {
+                padding: 40px 30px;
+            }
+
+            .download-buttons {
+                flex-direction: column;
+            }
+
+            .download-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .requirements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .installation-section {
+                padding: 40px 30px;
+            }
+
+            .step {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Background Animation -->
+    <div class="bg-animation" id="particles"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="krystal-client.html" class="logo">
+            <img src="KC element pic.png" alt="Krystal Client" class="logo-img">
+        </a>
+        <a href="krystal-client.html" class="back-button">← Back to Home</a>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="download-container">
+        <div class="download-header">
+            <h1 class="download-title">Download</h1>
+            <p class="download-subtitle">Get Krystal Client now and enhance your gaming experience</p>
+            <span class="version-badge">LATEST VERSION: v1.0.0</span>
+        </div>
+
+        <!-- Download Section -->
+        <div class="download-section">
+            <h2>Download Krystal Client</h2>
+            <p style="font-size: 20px; color: rgba(255, 255, 255, 0.7); margin-bottom: 20px;">
+                download the client
+            </p>
+
+            <div class="download-buttons">
+                <a href="#" class="download-btn download-btn-primary">
+                    <span class="download-icon">⬇</span>
+                    Download .JAR
+                </a>
+            </div>
+
+            <div class="info-box">
+                <p><strong>File type :</strong> .jar | <strong>Supports:</strong> Minecraft 1.21.4 | <strong>License:</strong> CC BY-NC-ND 4.0</p>
+            </div>
+        </div>
+
+        <!-- System Requirements -->
+        <div class="requirements-grid">
+            <div class="requirement-card">
+                </ul>
+            </div>
+
+            <div class="requirement-card">
+                <h3>🎮 Compatible Versions</h3>
+                <ul>
+                    
+                    
+                    <li>Minecraft 1.21.1.x</li>
+                    <li>Fabric Loader 0.14.0+</li>
+                    <li>Fabric API 1.21.4 required</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Installation Instructions -->
+        <div class="installation-section">
+            <h2>Installation Guide</h2>
+
+            <div class="warning-box">
+                <p><strong>Important:</strong> By downloading and using Krystal Client, you agree to our <a href="krystal-tos.html" style="color: var(--accent); text-decoration: underline;">Terms of Service</a>. Please ensure you comply with server rules when using the client.</p>
+            </div>
+
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Install Fabric Loader</h3>
+                        <p>Download and install Fabric Loader for your Minecraft version from the official Fabric website. Make sure you also install Fabric API.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Download Krystal Client</h3>
+                        <p>Click the download button above to get the latest version of Krystal Client. Save the .jar file to a location you can easily find.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Locate Your Mods Folder</h3>
+                        <p>Open your Minecraft directory and navigate to the "mods" folder. On Windows, press Windows+R, type %appdata%\.minecraft\mods and press Enter.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Install the Client</h3>
+                        <p>Copy the Krystal Client .jar file into your mods folder. Make sure no other conflicting mods are present.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Launch Minecraft</h3>
+                        <p>Start Minecraft using the Fabric profile. Krystal Client will load automatically. Press Right Shift to open the client menu in-game.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box" style="margin-top: 50px;">
+                <p><strong>Need Help?</strong> Join our Discord server for support, updates, and community discussions. Our team is available 24/7 to assist you with installation or troubleshooting.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.custom-cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Create trail
+            if (Math.random() > 0.7) {
+                const trail = document.createElement('div');
+                trail.className = 'cursor-trail';
+                trail.style.left = e.clientX + 'px';
+                trail.style.top = e.clientY + 'px';
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), 600);
+            }
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Particle Background
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Button and Link hover effects
+        document.querySelectorAll('a, button').forEach(element => {
+            element.addEventListener('mouseenter', () => {
+                cursor.style.width = '40px';
+                cursor.style.height = '40px';
+            });
+            element.addEventListener('mouseleave', () => {
+                cursor.style.width = '20px';
+                cursor.style.height = '20px';
+            });
+        });
+    </script>
+</body>
+</html>
